@@ -19,7 +19,7 @@ const URLFileLoader: React.FC<URLFileLoaderProps> = ({ onDataLoaded, onError }) 
 
   const parseURLParams = useCallback(() => {
     const params = new URLSearchParams(window.location.search);
-    
+
     // Get files parameter - can be comma-separated or multiple params
     const filesParam = params.get('files');
     const namesParam = params.get('names');
@@ -31,7 +31,7 @@ const URLFileLoader: React.FC<URLFileLoaderProps> = ({ onDataLoaded, onError }) 
 
     // Split by comma if multiple files
     const files = filesParam.split(',').map(f => decodeURIComponent(f.trim()));
-    const names = namesParam 
+    const names = namesParam
       ? namesParam.split(',').map(n => decodeURIComponent(n.trim()))
       : files.map((_, i) => `file_${i + 1}`);
 
@@ -39,10 +39,8 @@ const URLFileLoader: React.FC<URLFileLoaderProps> = ({ onDataLoaded, onError }) 
   }, []);
 
   const fetchFile = async (url: string): Promise<string> => {
-    // Add .csv extension if not present (for Cloudinary raw uploads)
-    const fetchUrl = url.endsWith('.csv') ? url : `${url}.csv`;
-    
-    const response = await fetch(fetchUrl, {
+    // Don't add .csv - use URL as-is
+    const response = await fetch(url, {
       method: 'GET',
       headers: { 'Accept': 'text/csv,text/plain,*/*' }
     });
@@ -137,23 +135,22 @@ const URLFileLoader: React.FC<URLFileLoaderProps> = ({ onDataLoaded, onError }) 
         <p className="text-gray-600 mb-6">
           Fetching {loadingFiles.length} file{loadingFiles.length > 1 ? 's' : ''} from cloud storage...
         </p>
-        
+
         {/* Progress */}
         <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
-          <div 
+          <div
             className="bg-blue-600 h-2 rounded-full transition-all duration-300"
             style={{ width: `${(loadedCount / loadingFiles.length) * 100}%` }}
           />
         </div>
-        
+
         {/* File list */}
         <div className="space-y-2">
           {loadingFiles.map((name, i) => (
-            <div 
-              key={name} 
-              className={`flex items-center gap-2 p-2 rounded-lg ${
-                i < loadedCount ? 'bg-green-50 text-green-700' : 'bg-gray-50 text-gray-500'
-              }`}
+            <div
+              key={name}
+              className={`flex items-center gap-2 p-2 rounded-lg ${i < loadedCount ? 'bg-green-50 text-green-700' : 'bg-gray-50 text-gray-500'
+                }`}
             >
               <FileText size={16} />
               <span className="text-sm">{name}</span>
