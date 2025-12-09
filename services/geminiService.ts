@@ -2,7 +2,7 @@
 import { SensorData, Insight, StatsCollection } from '../types';
 import { SENSOR_THRESHOLDS } from '../constants';
 
-const OPENROUTER_API_KEY = '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';
+const OPENROUTER_API_KEY = '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';
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
 const getStatsSummary = (data: SensorData[]): StatsCollection => {
